@@ -1,11 +1,23 @@
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import BoxProfile from "../../atoms/BoxProfile";
 import SearchInput from "../../atoms/SearchInput";
 
+const listNavbar = [
+  { name: "Home", path: "/" },
+  { name: "About", path: "/about" },
+];
+
 const Navbar = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [search, setSearch] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <>
+      {/* Top Header */}
       <header className="absolute top-4 right-4 z-50 mt-2 flex h-12 w-[--my-width-nav] items-center justify-between bg-transparent px-4">
-        {/* Left Section */}
         <section className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-6 rounded-full bg-[--bg-primary-cray]">
             <p className="font-barlow ml-3 text-sm font-semibold text-[--text-color-black]">
@@ -13,29 +25,64 @@ const Navbar = () => {
             </p>
             <button
               className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-[--bg-secondary-cray] opacity-85 hover:opacity-100"
-              onClick={() => {
-                // Add menu toggle logic here
-              }}
+              onClick={() => setIsOpen(!isOpen)}
             >
-              <i className="fa-solid fa-bars text-[--text-color-black]"></i>
+              <i className="fa-solid fa-bars text-[--text-color-black]" />
             </button>
           </div>
         </section>
 
-        {/* Right Section (Search + Profile) */}
         <section className="flex items-center justify-between gap-2 max-md:hidden">
           <SearchInput
-            value={""} 
-            onChange={() => {}}
-            onSearch={() => {}}
+            value={search}
+            onChange={(e) => setSearch(e)}
+            onSearch={() => console.log(search)}
           />
           <BoxProfile
             name="Test"
             onClick={() => console.log("profile")}
-            picture={""}
+            picture={"../../src/assets/images/boxprofile.jpg"}
           />
         </section>
       </header>
+
+      {/* Mobile Overlay Menu */}
+      <div
+        className={`fixed top-0 left-0 mx-auto flex h-[100vh] w-full items-center justify-between bg-black/50 px-4 ${
+          isOpen ? "z-50 overflow-hidden opacity-100" : "-z-1 opacity-0"
+        }`}
+        onClick={() => setIsOpen(false)}
+      >
+        <aside
+          className={`${
+            isOpen ? "translate-x-0" : "-z-1 -translate-x-full"
+          } fixed top-0 right-0 h-full w-[80vw] bg-[--bg-secondary-cray] transition-transform duration-300 z-10`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Close Button */}
+          <div className="absolute top-4 right-4 z-10 cursor-pointer">
+            <button onClick={() => setIsOpen(false)}>
+              <i className="fa-solid fa-xmark text-[--text-color-black] text-xl" />
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="mt-20 flex flex-col items-center gap-6">
+            {listNavbar.map((item, index) => (
+              <p
+                key={index}
+                className="w-full cursor-pointer px-4 py-2 text-lg font-semibold text-[--text-color-black] opacity-90 transition duration-300 ease-in-out hover:bg-[--bg-primary-cray] hover:opacity-100 text-center"
+                onClick={() => {
+                  navigate(item.path);
+                  setIsOpen(false);
+                }}
+              >
+                {item.name}
+              </p>
+            ))}
+          </div>
+        </aside>
+      </div>
     </>
   );
 };
