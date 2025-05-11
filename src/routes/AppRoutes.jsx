@@ -1,15 +1,12 @@
 import { Outlet } from "react-router-dom";
+import Home from "../pages/home";
+import About from "../pages/about";
 
 const AppRoutes = [
   {
     name: "main",
     path: "/",
-    Component: () => 
-        (
-            <main>
-                <Outlet />
-            </main>
-        ),
+    Component: () => <main> <Outlet /> </main>,
     key: "main",
     routes: [
       {
@@ -18,13 +15,13 @@ const AppRoutes = [
         path: "/",
         index: true,
         requireAuth: false,
-        Component: () => <p>home</p>,
+        Component: () => <Home />,
       },
       {
         key: "about",
         name: "about",
         path: "/about",
-        Component: () => <p>this content about page</p>,
+        Component: () => <About />,
       },
     ],
   },
