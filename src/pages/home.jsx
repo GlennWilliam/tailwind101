@@ -1,8 +1,9 @@
 import React from 'react'
+import HeroBanner from '../components/molecules/HeroBanner'
 
 const home = () => {
   return (
-    <h1 className="text-3xl font-bold underline">Hello world!</h1>
+    <HeroBanner />
   )
 }
 

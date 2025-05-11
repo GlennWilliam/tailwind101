@@ -1,12 +1,13 @@
 import { Outlet } from "react-router-dom";
 import Home from "../pages/home";
 import About from "../pages/about";
+import MainLayout from "../components/layout/MainLayout";
 
 const AppRoutes = [
   {
     name: "main",
     path: "/",
-    Component: () => <main> <Outlet /> </main>,
+    Component: () => <MainLayout />,
     key: "main",
     routes: [
       {
